@@ -1,5 +1,4 @@
 #!/usr/bin/perl -w
-# $Id: logger.pl,v 1.11 2014/04/25 23:51:47 jwodder Exp jwodder $
 use strict;
 use Getopt::Std;
 use IO::Socket::INET;
@@ -10,8 +9,7 @@ my $server = 'irc.freenode.net';
 my $port = 6667;
 my @chans = ('#nethack', '#lojban', '#jbosnu', '#ckule');
 my $pass = 'testing';
-my @nicks = qw< LurkerToTheSide IRCDrugBoat Thoth Mandos Námo Namo Vairë Vaire
- arithm logmon monlog >;
+my @nicks = qw< logger.pl IRCLogBot >;
 my $user = 'lurker';
 my $real = 'Joey Lurkenstein';
 my $nickmode = 2;
@@ -57,7 +55,7 @@ $pass = sanitize($opts{p}, 1) if exists $opts{p};
 ($user = sanitize $opts{u}) =~ y/@/_/ if exists $opts{u} && $opts{u} !~ /^:?$/;
 $real = sanitize($opts{r}, 1) if exists $opts{r};
 @nicks = map { sanitize $_ } split /[\s,]+/, $opts{n} if exists $opts{n};
- ### Filter out empty nicks and deal with illegal characters!
+ ### TODO: Filter out empty nicks and deal with illegal characters!
 $nickmode = $opts{N} if exists $opts{N} && $opts{N} =~ /^[012]$/;
 $longmode = $opts{L} if exists $opts{L} && $opts{L} =~ /^\d+$/;
 $S = $opts{S} if exists $opts{S};
@@ -65,7 +63,7 @@ $opts{P} = $opts{P} ? sanitize $opts{P} : 'Glaucester';
 $dir = $opts{d} if exists $opts{d};
 
 @chans = map { sanitize $_ } map { split /[\s,]+/ } @ARGV if @ARGV;
- ### Filter out empty channels and deal with illegal characters!
+ ### TODO: Filter out empty channels and deal with illegal characters!
 
 my $meta;
 if ($opts{M} && $opts{M} eq '-') { $meta = *STDOUT }
