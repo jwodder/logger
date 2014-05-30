@@ -26,6 +26,7 @@
    - logs of control commands
   - logged direct PRIVMSGs (logged as raw)
    - change to "PRIVMSG from $sender: $text" ?
+- Handle ChanServ messages specially?
 
 - Add a control command for changing the bot's NICK
 - Add a control command for making the bot rotate logfiles

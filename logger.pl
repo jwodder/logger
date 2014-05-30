@@ -4,6 +4,8 @@ use Getopt::Std;
 use IO::Socket::INET;
 use POSIX 'strftime';
 
+our $VERSION = '1.12';
+
 # Default values:
 my $server = 'irc.freenode.net';
 my $port = 6667;
@@ -43,7 +45,6 @@ my %cmdMasks = (
  MODE    => 128,
 );
 
-(our $VERSION = '$Revision: 1.11 $') =~ s/^\x24Revision: (\S+) \x24$/$1/;
 $Getopt::Std::STANDARD_HELP_VERSION = 1;
 
 my %opts;
@@ -74,7 +75,7 @@ elsif ($opts{M}) {
 
 metalog '-' x 40;
 metalog $S, 'Starting up.';
-metalog $S, '$Id: logger.pl,v 1.11 2014/04/25 23:51:47 jwodder Exp jwodder $';
+metalog $S, "Version: $VERSION";
 metalog $S, "Server: $server:$port";
 metalog $S, "Server password: $pass";
 metalog $S, "Nicknames: @nicks";
