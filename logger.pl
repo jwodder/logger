@@ -18,6 +18,7 @@ my $nickmode = 2;
 my $longmode = 135;
 my $S = '# ';
 my $dir = '';
+my $cntrlpass = '';
 
 sub now();
 sub metalog(@);
@@ -60,7 +61,7 @@ $real = sanitize($opts{r}, 1) if exists $opts{r};
 $nickmode = $opts{N} if exists $opts{N} && $opts{N} =~ /^[012]$/;
 $longmode = $opts{L} if exists $opts{L} && $opts{L} =~ /^\d+$/;
 $S = $opts{S} if exists $opts{S};
-$opts{P} = $opts{P} ? sanitize $opts{P} : 'Glaucester';
+$cntrlpass = sanitize $opts{P} if exists $opts{P};
 $dir = $opts{d} if exists $opts{d};
 
 @chans = map { sanitize $_ } map { split /[\s,]+/ } @ARGV if @ARGV;
@@ -84,7 +85,7 @@ metalog $S, "Realname: $real";
 metalog $S, "Channels: @chans";
 metalog $S, "nickmode: $nickmode";
 metalog $S, "longmode: $longmode";
-metalog $S, 'Control password: ', $opts{P} ? 'yes' : 'no';
+metalog $S, 'Control password: ', $cntrlpass ? 'yes' : 'no';
 metalog $S, "Log name prefix: $dir";
 
 my $sock = IO::Socket::INET->new(PeerAddr => $server, PeerPort => $port,
@@ -216,7 +217,7 @@ while (<$sock>) {
   my($target, $msg) = @args;
   if ($target eq $me) {
    my @edict = ircArgs $msg;
-   if ($opts{P} && @edict && $edict[0] eq $opts{P}) {
+   if ($cntrlpass && @edict && $edict[0] eq $cntrlpass) {
     shift @edict;
     my($subcmd, @subargs) = @edict;
     $subcmd = uc $subcmd if defined $subcmd;
@@ -241,8 +242,8 @@ while (<$sock>) {
      }
      print $sock "PRIVMSG $nick :Ok.\r\n";
     } elsif ($subcmd eq 'PASS' && @subargs == 1) {
-     $opts{P} = $subargs[0];
-     metalog $S, 'Control password ', $opts{P} ? 'changed' : 'deactivated',
+     $cntrlpass = $subargs[0];
+     metalog $S, 'Control password ', $cntrlpass ? 'changed' : 'deactivated',
       " by $sender";
      # Should deactivating the password even be allowed?
      print $sock "PRIVMSG $nick :Ok.\r\n";
