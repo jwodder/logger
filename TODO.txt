@@ -44,8 +44,15 @@
 - Define &HELP_MESSAGE
 - Print a usage message when an invalid option is supplied on the command line
 - How should -P arguments containing spaces be handled?
+- Should setting the control password to "0" deactivate it?
 
 - Rewrite the code to use Perl 5.10's "given" syntax?
 - Incorporate most of the security improvements (mainly involving command-line
   options) into listchans.pl
 - Make the script detach itself from the terminal automatically?
+
+- Eliminate `--longmode` option?
+- Make `--nicknames` into a multi-use option
+- Assume that one argument = one channel
+- Auto-create `--directory` directory if it doesn't exist
+- Eliminate `--meta` option and always use `$directory/meta.txt`
