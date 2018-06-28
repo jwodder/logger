@@ -291,11 +291,10 @@ class IRCLogger(LineOnlyReceiver):
 
         elif cmd == 'QUIT':
             if nick == self.nickname:
-                for chan in self.chanlogfiles.keys():
+                for chan in list(self.chanlogfiles.keys()):
                     self.chanlog(chan, 'QUIT')
                     self.chanlog(chan, '-' * 40)
-                    self.chanlogfiles[chan].close()
-                    del self.chanlogfiles[chan]
+                    self.chanlogfiles.pop(chan).close()
             else:
                 for ch in self.whereis(nick):
                     self.chanlog(
