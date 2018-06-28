@@ -1,31 +1,29 @@
-- Add a manpage (See the list of options at the end of the program)
-
 - Commands to handle:
- - KILL
- - INVITE (just metalog)
+    - KILL
+    - INVITE (just metalog)
 - Improve handling of NOTICEs
 - Handle 328 and 333 replies
-- Should the [=*@] character in NAMES replies be recorded somehow?
+- Should the `[=*@]` character in NAMES replies be recorded somehow?
 - Detect login failure arising at the PASS and/or USER stages
 - Handle servers that disconnect (via an ERROR message) at inappropriate times
-  (including while logging in) and incorporate this feature into listchans.pl
- - When an ERROR message is received while in the main loop, log it to any
-   channels still listed in %chans (and then delete them?).
+  (including while logging in)
+    - When an ERROR message is received while in the main loop, log it to any
+      channels still listed in %chans (and then delete them?).
 - Should tabs be allowed in channel names?
 - Handle instructions to "JOIN 0"
 - Try to improve the formats of metalogged messages
- - It seems that metalogged messages can be divided into the following
-   categories:
-  - raw messages
-   - NOTICE - change to "NOTICE from $sender: $text" ?
-   - ERROR
-   - error replies
-  - UNKNOWN messages
-  - marginally-rephrased messages (WALLOPS, self-MODE, etc.)
-  - server messages
-   - logs of control commands
-  - logged direct PRIVMSGs (logged as raw)
-   - change to "PRIVMSG from $sender: $text" ?
+    - It seems that metalogged messages can be divided into the following
+      categories:
+        - raw messages
+            - NOTICE - change to "NOTICE from $sender: $text" ?
+            - ERROR
+            - error replies
+        - UNKNOWN messages
+        - marginally-rephrased messages (WALLOPS, self-MODE, etc.)
+        - server messages
+            - logs of control commands
+        - logged direct PRIVMSGs (logged as raw)
+            - change to "PRIVMSG from $sender: $text" ?
 - Handle ChanServ messages specially?
 
 - Add a control command for changing the bot's NICK
@@ -38,17 +36,9 @@
 
 - Add a way to pass the control password (and other parameters?) to the script
   from a file
-- Allow $longmode to be specified as a hex, octal, or binary(?) number
 - Complain about invalid -N and -L arguments
-- Convert the list of options into a POD manpage
-- Define &HELP_MESSAGE
-- Print a usage message when an invalid option is supplied on the command line
 - How should -P arguments containing spaces be handled?
-- Should setting the control password to "0" deactivate it?
 
-- Rewrite the code to use Perl 5.10's "given" syntax?
-- Incorporate most of the security improvements (mainly involving command-line
-  options) into listchans.pl
 - Make the script detach itself from the terminal automatically?
 
 - Eliminate `--longmode` option?
@@ -56,3 +46,4 @@
 - Assume that one argument = one channel
 - Auto-create `--directory` directory if it doesn't exist
 - Eliminate `--meta` option and always use `$directory/meta.txt`
+- Add docstrings and `help` strings
