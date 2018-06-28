@@ -196,7 +196,7 @@ class IRCLogger(LineOnlyReceiver):
                         self.metalog("# Setting user MODE to: ", ' '.join(modes))
                 self.start = now()
                 for c in self.chanList:
-                    self.joinChan(c)
+                    self.sendLine('JOIN ' + c)
             elif re.match(r'^:[^ ]+ +[45]\d\d\b', line):
                 self.metalog(line)
                 self.try_next_nick()
@@ -262,7 +262,7 @@ class IRCLogger(LineOnlyReceiver):
         elif cmd == 'JOIN' and len(args) == 1:
             if nick == self.nickname:
                 for chan in args[0].split(','):
-                    self.chanlog(chan, 'JOINED')
+                    self.joinChan(chan)
             else:
                 for chan in args[0].split(','):
                     if chan in self.chanlogfiles:
@@ -345,7 +345,7 @@ class IRCLogger(LineOnlyReceiver):
                         self.metalog("# Joining: {} (as commanded by {})"
                                 .format(' '.join(newchans), sender))
                         for ch in newchans:
-                            self.joinChan(ch)
+                            self.sendLine('JOIN ' + ch)
                         self.sendLine("PRIVMSG " + nick + " :Ok.")
 
                     elif subcmd == 'PART':
@@ -512,6 +512,9 @@ class IRCLogger(LineOnlyReceiver):
         if ch in self.chanlogfiles:
             print(now(), '\t', *args, sep='', file=self.chanlogfiles[ch],
                   flush=True)
+        else:
+            self.metalog('# Message received for unknown channel {}: {}'
+                         .format(ch, ''.join(args)))
 
     def joinChan(self, chan):
         if chan in self.chanlogfiles:
@@ -525,9 +528,8 @@ class IRCLogger(LineOnlyReceiver):
             )
             return
         self.chanlogfiles[chan] = log
-        self.sendLine('JOIN ' + chan)
         self.chanlog(chan, '-' * 40)
-        self.chanlog(chan, "JOINING " + chan)
+        self.chanlog(chan, "JOINED " + chan)
 
     def whereis(self, nick):
         return self.nicks.get(nick, [])
